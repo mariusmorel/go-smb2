@@ -59,6 +59,7 @@ func main() {
 
 	s, err := d.Dial(conn)
 	if err != nil {
+		log.Println(ntlmsspClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSComputerName))
 		panic(err)
 	}
 	defer s.Logoff()
