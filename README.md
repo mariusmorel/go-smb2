@@ -16,7 +16,7 @@ SMB2/3 client implementation.
 Installation
 ------------
 
-`go get github.com/LeakIX/go-smb2`
+`go get github.com/LeakIX/go-smb2@master`
 
 Documentation
 -------------
