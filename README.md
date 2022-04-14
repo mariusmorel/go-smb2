@@ -1,6 +1,13 @@
 smb2
 ====
 
+Warning
+-------
+
+This library is modified for specific security recon use cases.
+
+For a production ready library, please use the original [Hiroshi Ioka's version](https://github.com/hirochachacha/go-smb2).
+
 Description
 -----------
 
@@ -9,7 +16,7 @@ SMB2/3 client implementation.
 Installation
 ------------
 
-`go get github.com/hirochachacha/go-smb2`
+`go get github.com/LeakIX/go-smb2`
 
 Documentation
 -------------
