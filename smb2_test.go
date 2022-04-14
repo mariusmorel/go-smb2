@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/LeakIX/ntlmssp"
 	"io"
 	"io/ioutil"
 	"net"
@@ -93,7 +94,14 @@ func connect(f func()) {
 		if cfg.Session.Type != "ntlm" {
 			panic("unsupported session type")
 		}
-
+		ntlmsspClient, err := ntlmssp.NewClient(
+			ntlmssp.SetCompatibilityLevel(1),
+			ntlmssp.SetUserInfo(cfg.Session.User, cfg.Session.Password),
+			ntlmssp.SetDomain(cfg.Session.Domain),
+			ntlmssp.SetWorkstation(cfg.Session.Workstation))
+		if err != nil {
+			panic(err)
+		}
 		dialer = &smb2.Dialer{
 			MaxCreditBalance: cfg.MaxCreditBalance,
 			Negotiator: smb2.Negotiator{
@@ -101,11 +109,7 @@ func connect(f func()) {
 				SpecifiedDialect:      cfg.Conn.SpecifiedDialect,
 			},
 			Initiator: &smb2.NTLMSSPInitiator{
-				User:        cfg.Session.User,
-				Password:    cfg.Session.Password,
-				Domain:      cfg.Session.Domain,
-				Workstation: cfg.Session.Workstation,
-				TargetSPN:   cfg.Session.TargetSPN,
+				NTLMSSPClient: ntlmsspClient,
 			},
 		}
 

@@ -2,6 +2,7 @@ package smb2_test
 
 import (
 	"fmt"
+	"github.com/LeakIX/ntlmssp"
 	"io"
 	"io/ioutil"
 	"net"
@@ -15,12 +16,16 @@ func Example() {
 		panic(err)
 	}
 	defer conn.Close()
-
+	ntlmsspClient, err := ntlmssp.NewClient(
+		ntlmssp.SetCompatibilityLevel(1),
+		ntlmssp.SetUserInfo("Guest", ""),
+		ntlmssp.SetDomain("MicrosoftAccount"))
+	if err != nil {
+		panic(err)
+	}
 	d := &smb2.Dialer{
 		Initiator: &smb2.NTLMSSPInitiator{
-			User:     "Guest",
-			Password: "",
-			Domain:   "MicrosoftAccount",
+			NTLMSSPClient: ntlmsspClient,
 		},
 	}
 

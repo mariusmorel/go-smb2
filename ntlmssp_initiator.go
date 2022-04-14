@@ -2,22 +2,15 @@ package smb2
 
 import (
 	"encoding/asn1"
-	"github.com/LeakIX/ntlmssp"
 	"github.com/LeakIX/go-smb2/lib/spnego"
+	"github.com/LeakIX/ntlmssp"
 )
 
 // NTLMInitiator implements session-setup through NTLMv2.
-// It doesn't support NTLMv1. You can use Hash instead of Password.
 type NTLMSSPInitiator struct {
-	User        string
-	Password    string
-	Hash        []byte
-	Domain      string
-	Workstation string
-	TargetSPN   string
-	ntlm        *ntlmssp.Client
-	seqNum      uint32
-	ntlmInfoMap *NTLMSSPInfoMap
+	NTLMSSPClient *ntlmssp.Client
+	seqNum        uint32
+	ntlmInfoMap   *NTLMSSPInfoMap
 }
 
 type NTLMSSPInfoMap struct {
@@ -42,11 +35,10 @@ func (i *NTLMSSPInitiator) GetInfoMap() *NTLMSSPInfoMap {
 }
 
 func (i *NTLMSSPInitiator) initSecContext() (_ []byte, err error) {
-	i.ntlm, err = ntlmssp.NewClient(ntlmssp.SetCompatibilityLevel(1), ntlmssp.SetUserInfo(i.User, i.Password), ntlmssp.SetDomain("NT AUTHORITY"))
 	if err != nil {
 		return nil, err
 	}
-	nmsg, err := i.ntlm.Authenticate(nil, nil)
+	nmsg, err := i.NTLMSSPClient.Authenticate(nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +46,7 @@ func (i *NTLMSSPInitiator) initSecContext() (_ []byte, err error) {
 }
 
 func (i *NTLMSSPInitiator) acceptSecContext(sc []byte) ([]byte, error) {
-	amsg, err := i.ntlm.Authenticate(sc, nil)
+	amsg, err := i.NTLMSSPClient.Authenticate(sc, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -66,19 +58,19 @@ func (i *NTLMSSPInitiator) acceptSecContext(sc []byte) ([]byte, error) {
 		DnsDomainName:   "",
 		DnsTreeName:     "",
 	}
-	if NbComputerName, found := i.ntlm.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvNbComputerName); found {
+	if NbComputerName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvNbComputerName); found {
 		i.ntlmInfoMap.NbComputerName = string(NbComputerName)
 	}
-	if NbDomainName, found := i.ntlm.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvNbDomainName); found {
+	if NbDomainName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvNbDomainName); found {
 		i.ntlmInfoMap.NbDomainName = string(NbDomainName)
 	}
-	if DnsComputerName, found := i.ntlm.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSComputerName); found {
+	if DnsComputerName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSComputerName); found {
 		i.ntlmInfoMap.DnsComputerName = string(DnsComputerName)
 	}
-	if DnsDomainName, found := i.ntlm.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSDomainName); found {
+	if DnsDomainName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSDomainName); found {
 		i.ntlmInfoMap.DnsDomainName = string(DnsDomainName)
 	}
-	if DnsTreeName, found := i.ntlm.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSTreeName); found {
+	if DnsTreeName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSTreeName); found {
 		i.ntlmInfoMap.DnsTreeName = string(DnsTreeName)
 	}
 	return amsg, nil
@@ -89,7 +81,7 @@ func (i *NTLMSSPInitiator) sum(bs []byte) []byte {
 }
 
 func (i *NTLMSSPInitiator) sessionKey() []byte {
-	return i.ntlm.SessionDetails().ExportedSessionKey
+	return i.NTLMSSPClient.SessionDetails().ExportedSessionKey
 }
 
 func (i *NTLMSSPInitiator) infoMap() *NTLMSSPInfoMap {
