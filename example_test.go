@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/LeakIX/go-smb2"
 )
 
 func Example() {
@@ -17,7 +17,7 @@ func Example() {
 	defer conn.Close()
 
 	d := &smb2.Dialer{
-		Initiator: &smb2.NTLMInitiator{
+		Initiator: &smb2.NTLMSSPInitiator{
 			User:     "Guest",
 			Password: "",
 			Domain:   "MicrosoftAccount",

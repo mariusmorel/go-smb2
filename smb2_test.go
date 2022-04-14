@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/LeakIX/go-smb2"
 
 	"testing"
 )
@@ -100,7 +100,7 @@ func connect(f func()) {
 				RequireMessageSigning: cfg.Conn.RequireMessageSigning,
 				SpecifiedDialect:      cfg.Conn.SpecifiedDialect,
 			},
-			Initiator: &smb2.NTLMInitiator{
+			Initiator: &smb2.NTLMSSPInitiator{
 				User:        cfg.Session.User,
 				Password:    cfg.Session.Password,
 				Domain:      cfg.Session.Domain,

@@ -39,7 +39,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	. "github.com/hirochachacha/go-smb2/internal/erref"
+	. "github.com/LeakIX/go-smb2/lib/erref"
 )
 
 // ErrBadPattern indicates a pattern was malformed.

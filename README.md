@@ -1,9 +1,6 @@
 smb2
 ====
 
-[![Build Status](https://github.com/hirochachacha/go-smb2/actions/workflows/go.yml/badge.svg)](https://github.com/hirochachacha/go-smb2/actions/workflows/go.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/hirochachacha/go-smb2.svg)](https://pkg.go.dev/github.com/hirochachacha/go-smb2)
-
 Description
 -----------
 
@@ -17,7 +14,7 @@ Installation
 Documentation
 -------------
 
-http://godoc.org/github.com/hirochachacha/go-smb2
+http://godoc.org/github.com/LeakIX/go-smb2
 
 Examples
 --------
@@ -31,7 +28,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/LeakIX/go-smb2"
 )
 
 func main() {
@@ -42,7 +39,7 @@ func main() {
 	defer conn.Close()
 
 	d := &smb2.Dialer{
-		Initiator: &smb2.NTLMInitiator{
+		Initiator: &smb2.NTLMSSPInitiator{
 			User:     "USERNAME",
 			Password: "PASSWORD",
 		},
@@ -75,7 +72,7 @@ import (
 	"io/ioutil"
 	"net"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/LeakIX/go-smb2"
 )
 
 func main() {
@@ -86,7 +83,7 @@ func main() {
 	defer conn.Close()
 
 	d := &smb2.Dialer{
-		Initiator: &smb2.NTLMInitiator{
+		Initiator: &smb2.NTLMSSPInitiator{
 			User:     "USERNAME",
 			Password: "PASSWORD",
 		},
@@ -141,7 +138,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/LeakIX/go-smb2"
 )
 
 func main() {
@@ -152,7 +149,7 @@ func main() {
 	defer conn.Close()
 
 	d := &smb2.Dialer{
-		Initiator: &smb2.NTLMInitiator{
+		Initiator: &smb2.NTLMSSPInitiator{
 			User:     "USERNAME",
 			Password: "PASSWORD",
 		},
@@ -198,7 +195,7 @@ import (
 	"net"
 	iofs "io/fs"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/LeakIX/go-smb2"
 )
 
 func main() {
@@ -209,7 +206,7 @@ func main() {
 	defer conn.Close()
 
 	d := &smb2.Dialer{
-		Initiator: &smb2.NTLMInitiator{
+		Initiator: &smb2.NTLMSSPInitiator{
 			User:     "USERNAME",
 			Password: "PASSWORD",
 		},
