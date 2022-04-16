@@ -77,7 +77,8 @@ func (i *NTLMSSPInitiator) acceptSecContext(sc []byte) ([]byte, error) {
 }
 
 func (i *NTLMSSPInitiator) sum(bs []byte) []byte {
-	return nil
+	mac, _ := i.NTLMSSPClient.SecuritySession().Mac(bs)
+	return mac
 }
 
 func (i *NTLMSSPInitiator) sessionKey() []byte {

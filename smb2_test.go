@@ -95,7 +95,7 @@ func connect(f func()) {
 			panic("unsupported session type")
 		}
 		ntlmsspClient, err := ntlmssp.NewClient(
-			ntlmssp.SetCompatibilityLevel(1),
+			ntlmssp.SetCompatibilityLevel(3),
 			ntlmssp.SetUserInfo(cfg.Session.User, cfg.Session.Password),
 			ntlmssp.SetDomain(cfg.Session.Domain),
 			ntlmssp.SetWorkstation(cfg.Session.Workstation))

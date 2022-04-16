@@ -17,7 +17,7 @@ func Example() {
 	}
 	defer conn.Close()
 	ntlmsspClient, err := ntlmssp.NewClient(
-		ntlmssp.SetCompatibilityLevel(1),
+		ntlmssp.SetCompatibilityLevel(3),
 		ntlmssp.SetUserInfo("Guest", ""),
 		ntlmssp.SetDomain("MicrosoftAccount"))
 	if err != nil {

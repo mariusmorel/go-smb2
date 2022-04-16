@@ -3,7 +3,7 @@ module github.com/LeakIX/go-smb2
 go 1.12
 
 require (
-	github.com/LeakIX/ntlmssp v0.0.0-20220414221953-1652a17be0e8
+	github.com/LeakIX/ntlmssp v0.0.0-20220416204139-20c30cc2d028
 	github.com/geoffgarside/ber v1.1.0
 )
 
