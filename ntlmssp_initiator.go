@@ -58,20 +58,20 @@ func (i *NTLMSSPInitiator) acceptSecContext(sc []byte) ([]byte, error) {
 		DnsDomainName:   "",
 		DnsTreeName:     "",
 	}
-	if NbComputerName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvNbComputerName); found {
-		i.ntlmInfoMap.NbComputerName = string(NbComputerName)
+	if NbComputerName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.GetString(ntlmssp.MsvAvNbComputerName); found {
+		i.ntlmInfoMap.NbComputerName = NbComputerName
 	}
-	if NbDomainName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvNbDomainName); found {
-		i.ntlmInfoMap.NbDomainName = string(NbDomainName)
+	if NbDomainName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.GetString(ntlmssp.MsvAvNbDomainName); found {
+		i.ntlmInfoMap.NbDomainName = NbDomainName
 	}
-	if DnsComputerName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSComputerName); found {
-		i.ntlmInfoMap.DnsComputerName = string(DnsComputerName)
+	if DnsComputerName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.GetString(ntlmssp.MsvAvDNSComputerName); found {
+		i.ntlmInfoMap.DnsComputerName = DnsComputerName
 	}
-	if DnsDomainName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSDomainName); found {
-		i.ntlmInfoMap.DnsDomainName = string(DnsDomainName)
+	if DnsDomainName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.GetString(ntlmssp.MsvAvDNSDomainName); found {
+		i.ntlmInfoMap.DnsDomainName = DnsDomainName
 	}
-	if DnsTreeName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.Get(ntlmssp.MsvAvDNSTreeName); found {
-		i.ntlmInfoMap.DnsTreeName = string(DnsTreeName)
+	if DnsTreeName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.GetString(ntlmssp.MsvAvDNSTreeName); found {
+		i.ntlmInfoMap.DnsTreeName = DnsTreeName
 	}
 	return amsg, nil
 }
