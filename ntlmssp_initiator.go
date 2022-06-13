@@ -2,6 +2,7 @@ package smb2
 
 import (
 	"encoding/asn1"
+	"errors"
 	"github.com/LeakIX/go-smb2/lib/spnego"
 	"github.com/LeakIX/ntlmssp"
 )
@@ -41,6 +42,9 @@ func (i *NTLMSSPInitiator) initSecContext() (_ []byte, err error) {
 	nmsg, err := i.NTLMSSPClient.Authenticate(nil, nil)
 	if err != nil {
 		return nil, err
+	}
+	if i.NTLMSSPClient.SecuritySession() == nil {
+		return nil, errors.New("failed to establish secure session")
 	}
 	return nmsg, nil
 }
