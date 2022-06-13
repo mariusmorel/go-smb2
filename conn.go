@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/sha512"
+	"errors"
 	"fmt"
 	"os"
 	"sync"
@@ -595,6 +596,9 @@ exit:
 }
 
 func accept(cmd uint16, pkt []byte) (res []byte, err error) {
+	if len(pkt) < 64 {
+		return nil, errors.New("packet is too short")
+	}
 	p := PacketCodec(pkt)
 	if command := p.Command(); cmd != command {
 		return nil, &InvalidResponseError{fmt.Sprintf("expected command: %v, got %v", cmd, command)}
