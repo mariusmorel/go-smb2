@@ -43,9 +43,6 @@ func (i *NTLMSSPInitiator) initSecContext() (_ []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
-	if i.NTLMSSPClient.SecuritySession() == nil {
-		return nil, errors.New("failed to establish secure session")
-	}
 	return nmsg, nil
 }
 
@@ -76,6 +73,9 @@ func (i *NTLMSSPInitiator) acceptSecContext(sc []byte) ([]byte, error) {
 	}
 	if DnsTreeName, found := i.NTLMSSPClient.SessionDetails().TargetInfo.GetString(ntlmssp.MsvAvDNSTreeName); found {
 		i.ntlmInfoMap.DnsTreeName = DnsTreeName
+	}
+	if i.NTLMSSPClient.SecuritySession() == nil {
+		return nil, errors.New("failed to establish secure session")
 	}
 	return amsg, nil
 }
