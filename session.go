@@ -320,7 +320,7 @@ func (s *session) recv(rr *requestResponse) (pkt []byte, err error) {
 	log.Println(PacketCodec(pkt).SessionId())
 	log.Println("---------------------------------")
 	if sessionId := PacketCodec(pkt).SessionId(); sessionId != s.sessionId {
-		return nil, &InvalidResponseError{fmt.Sprintf("expected session id: %v, got %v", s.sessionId, sessionId)}
+		//return nil, &InvalidResponseError{fmt.Sprintf("expected session id: %v, got %v", s.sessionId, sessionId)}
 	}
 	return pkt, err
 }
