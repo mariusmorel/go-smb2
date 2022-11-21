@@ -57,7 +57,9 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 
 	p := PacketCodec(pkt)
 	
-	log.Println(p)
+	log.Println(string(p.Data()))
+	log.Println(string(p.ProtocolId()))
+	log.Println(p.Status())
 
 	if NtStatus(p.Status()) != STATUS_MORE_PROCESSING_REQUIRED {
 		return nil, &InvalidResponseError{fmt.Sprintf("expected status: %v, got %v", STATUS_MORE_PROCESSING_REQUIRED, NtStatus(p.Status()))}
@@ -305,7 +307,11 @@ func (s *session) recv(rr *requestResponse) (pkt []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Println(PacketCodec(pkt))
+	log.Println("---------------------------------")	
+	log.Println(string(PacketCodec(pkt).Data()))
+	log.Println(string(PacketCodec(pkt).ProtocolId()))
+	log.Println(PacketCodec(pkt).Status())
+	log.Println("---------------------------------")
 	if sessionId := PacketCodec(pkt).SessionId(); sessionId != s.sessionId {
 		return nil, &InvalidResponseError{fmt.Sprintf("expected session id: %v, got %v", s.sessionId, sessionId)}
 	}
