@@ -73,12 +73,15 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		return nil, err
 	}
 
+	log.Println(res)
 	r := SessionSetupResponseDecoder(res)
 	if r.IsInvalid() {
 		return nil, &InvalidResponseError{"broken session setup response format"}
 	}
 
+	log.Println(r)
 	sessionFlags := r.SessionFlags()
+	log.Println(sessionFlags)
 	if conn.requireSigning {
 		if sessionFlags&SMB2_SESSION_FLAG_IS_GUEST != 0 {
 			return nil, &InvalidResponseError{"guest account doesn't support signing"}
@@ -94,6 +97,9 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		sessionFlags:   sessionFlags,
 		sessionId:      p.SessionId(),
 	}
+	
+	log.Println(s)
+	log.Println(conn.dialect)
 
 	switch conn.dialect {
 	case SMB311:
@@ -135,6 +141,7 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 	if s.sessionFlags&(SMB2_SESSION_FLAG_IS_GUEST|SMB2_SESSION_FLAG_IS_NULL) == 0 {
 		sessionKey := spnego.sessionKey()
 
+		log.Println("2", conn.dialect)
 		switch conn.dialect {
 		case SMB202, SMB210:
 			s.signer = hmac.New(sha256.New, sessionKey)
