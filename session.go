@@ -73,15 +73,12 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		return nil, err
 	}
 
-	log.Println(res)
 	r := SessionSetupResponseDecoder(res)
 	if r.IsInvalid() {
 		return nil, &InvalidResponseError{"broken session setup response format"}
 	}
 
-	log.Println(r)
 	sessionFlags := r.SessionFlags()
-	log.Println(sessionFlags)
 	if conn.requireSigning {
 		if sessionFlags&SMB2_SESSION_FLAG_IS_GUEST != 0 {
 			return nil, &InvalidResponseError{"guest account doesn't support signing"}
@@ -97,9 +94,6 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		sessionFlags:   sessionFlags,
 		sessionId:      p.SessionId(),
 	}
-	
-	log.Println(s)
-	log.Println(conn.dialect)
 
 	switch conn.dialect {
 	case SMB311:
@@ -144,6 +138,7 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		log.Println("2", conn.dialect)
 		switch conn.dialect {
 		case SMB202, SMB210:
+			log.Println(sessionKey)
 			s.signer = hmac.New(sha256.New, sessionKey)
 			s.verifier = hmac.New(sha256.New, sessionKey)
 		case SMB300, SMB302:
@@ -240,11 +235,13 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		}
 	}
 
+	log.Println(rr)
 	pkt, err = s.recv(rr)
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println("ok")
+	
 	res, err = accept(SMB2_SESSION_SETUP, pkt)
 	if err != nil {
 		return nil, err
