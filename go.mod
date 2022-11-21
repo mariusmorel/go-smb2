@@ -1,4 +1,4 @@
-module github.com/LeakIX/go-smb2
+module github.com/mariusmorel/go-smb2
 
 go 1.12
 
