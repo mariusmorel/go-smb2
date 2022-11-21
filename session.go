@@ -138,7 +138,7 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		log.Println("2", conn.dialect)
 		switch conn.dialect {
 		case SMB202, SMB210:
-			log.Println(sessionKey)
+			log.Println(string(sessionKey))
 			s.signer = hmac.New(sha256.New, sessionKey)
 			s.verifier = hmac.New(sha256.New, sessionKey)
 		case SMB300, SMB302:
