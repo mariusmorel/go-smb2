@@ -139,8 +139,8 @@ func sessionSetup(conn *conn, i Initiator, ctx context.Context) (*session, error
 		switch conn.dialect {
 		case SMB202, SMB210:
 			log.Println(string(sessionKey))
-			s.signer = hmac.New(sha256.New, sessionKey)
-			s.verifier = hmac.New(sha256.New, sessionKey)
+			//s.signer = hmac.New(sha256.New, sessionKey)
+			//s.verifier = hmac.New(sha256.New, sessionKey)
 		case SMB300, SMB302:
 			signingKey := kdf(sessionKey, []byte("SMB2AESCMAC\x00"), []byte("SmbSign\x00"))
 			ciph, err := aes.NewCipher(signingKey)
